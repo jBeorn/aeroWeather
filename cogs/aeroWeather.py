@@ -6,17 +6,15 @@ import aiohttp
 import json
 
 
-
-# https://beta.aviationweather.gov/
 # https://beta.aviationweather.gov/data/example/
-# https://stackoverflow.com/questions/22346158/python-requests-how-to-limit-received-size-transfer-rate-and-or-total-time
 
-
-dump = True
+# Set to True if you want the METAR or TAF to be dumped in to a json file.
+dump = False
 
 class AeroWeather(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
+        print("Aero Weather Cog loaded")
 
 
     async def fetchMETAR(self, airport: str):
@@ -25,11 +23,11 @@ class AeroWeather(commands.Cog):
                 responseOk = response.ok
                 responseStatus = response.status
                 responseData = await response.json()
-        # print(responseOk, responseStatus)
         if dump:
             with open("aviationWeather.json", "w") as f:
                 json.dump(responseData, f, indent = 4)
-        if len(responseData) == 0:
+        if len(responseData) == 0 or not responseOk:
+            print(f"Response status - {responseStatus}, data {responseData}")
             weatherEmbed = discord.Embed(title = "Airport Not Found", color = discord.Color.blue())
             weatherEmbed.add_field(name = "", value = "Oops!! Airport not found", inline = True)
         else:
@@ -69,17 +67,16 @@ class AeroWeather(commands.Cog):
                 responseOk = response.ok
                 responseStatus = response.status
                 responseData = await response.json()
-        # print(responseOk, responseStatus)
         if dump:
             with open("aviationWeather.json", "w") as f:
                 json.dump(responseData, f, indent = 4)
-        if len(responseData) == 0:
+        if len(responseData) == 0 or not responseOk:
+            print(f"Response status - {responseStatus}, data {responseData}")
             weatherEmbed = discord.Embed(title = "Airport Not Found", color = discord.Color.blue())
             weatherEmbed.add_field(name = "", value = "Oops!! Airport not found", inline = True)
         else:
             try:
                 weatherCurrent = responseData[0]
-                # print(cloudCoverage)
                 weatherEmbed = discord.Embed(
                     title = f":earth_americas: {weatherCurrent['icaoId']}, {weatherCurrent['name']}", 
                     description = f":globe_with_meridians: {weatherCurrent['lat']}, {weatherCurrent['lon']} elevation __{weatherCurrent['elev']}ft__\n \n \
