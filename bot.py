@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord import app_commands
 import time
 
 from settings import TOKEN, OWNER_ID, PREFIX
@@ -10,7 +9,6 @@ class Client(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
         intents.message_content = True
-        # intents.members = True
         super().__init__(command_prefix = commands.when_mentioned_or(PREFIX), intents = intents, help_command = None)
         self.gears = ["cogs.aeroWeather"]
 
@@ -30,7 +28,7 @@ client = Client()
 
 
 @client.command()
-async def sync(ctx):
+async def sync(ctx: commands.Context):
     print("syncing slash commands")
     if ctx.author.id == OWNER_ID:
         synced = await client.tree.sync()
