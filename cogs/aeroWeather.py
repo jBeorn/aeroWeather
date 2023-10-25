@@ -6,7 +6,7 @@ import aiohttp
 import json
 
 
-# https://beta.aviationweather.gov/data/example/
+# https://aviationweather.gov/data/example/
 
 # Set to True if you want the METAR or TAF to be dumped in to a json file.
 dump = False
@@ -19,7 +19,7 @@ class AeroWeather(commands.Cog):
 
     async def fetchMETAR(self, airport: str):
         async with aiohttp.ClientSession() as session:
-            async with session.get(url = "https://beta.aviationweather.gov/cgi-bin/data/metar.php", params = {"ids": airport, "format": "json"}) as response:
+            async with session.get(url = "https://aviationweather.gov/cgi-bin/data/metar.php", params = {"ids": airport, "format": "json"}) as response:
                 responseOk = response.ok
                 responseStatus = response.status
                 responseData = await response.json()
@@ -54,7 +54,7 @@ class AeroWeather(commands.Cog):
                 weatherEmbed.add_field(name = "🌡️ Temperature", value = f"{weatherCurrent['temp']}°C")
                 weatherEmbed.add_field(name = "💦 Dew Point", value = f"{weatherCurrent['dewp']}°C")
                 weatherEmbed.add_field(name = "⏲ Sea Level Pressure", value = f"{weatherCurrent['altim']}mb")
-                weatherEmbed.set_footer(text = "by beta.aviationweather.gov")
+                weatherEmbed.set_footer(text = "by aviationweather.gov")
             except KeyError:
                 weatherEmbed = discord.Embed(title = "No response", color = discord.Color.blue())
                 weatherEmbed.add_field(name = "Error", value = "Oops!! error while parsing", inline = True)
@@ -63,7 +63,7 @@ class AeroWeather(commands.Cog):
 
     async def fetchTAF(self, airport: str):
         async with aiohttp.ClientSession() as session:
-            async with session.get(url = "https://beta.aviationweather.gov/cgi-bin/data/taf.php", params = {"ids": airport, "format": "json"}) as response:
+            async with session.get(url = "https://aviationweather.gov/cgi-bin/data/taf.php", params = {"ids": airport, "format": "json"}) as response:
                 responseOk = response.ok
                 responseStatus = response.status
                 responseData = await response.json()
