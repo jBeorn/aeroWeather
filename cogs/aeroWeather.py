@@ -84,7 +84,7 @@ class AeroWeather(commands.Cog):
                     color = discord.Color.blue()
                     )
                 weatherEmbed.add_field(name = "TAF", value = f"{weatherCurrent['rawTAF']}", inline = False)
-                weatherEmbed.set_footer(text = "by beta.aviationweather.gov")
+                weatherEmbed.set_footer(text = "by aviationweather.gov")
             except KeyError:
                 weatherEmbed = discord.Embed(title = "No response", color = discord.Color.blue())
                 weatherEmbed.add_field(name = "Error", value = "Oops!! error while parsing", inline = True)
