@@ -34,8 +34,10 @@ class AeroWeather(commands.Cog):
             try:
                 weatherCurrent = responseData[0]
                 cloudCoverage = ""
-                if len(weatherCurrent["clouds"]) == 1 and weatherCurrent["clouds"][0]["cover"] in ["CLR", "CAVOK"]:
-                    cloudCoverage += responseData[0]["clouds"][0]['cover']
+                if (len(weatherCurrent["clouds"]) == 1 and weatherCurrent["clouds"][0]["cover"] in ["CLR", "CAVOK"]):
+                    cloudCoverage += responseData[0]["clouds"][0]["cover"]
+                elif not weatherCurrent["clouds"]:
+                    cloudCoverage += "////"
                 else:
                     for coverage in weatherCurrent["clouds"]:
                         cloudCoverage += f"{coverage['cover']} at {coverage['base']}ft \n"
